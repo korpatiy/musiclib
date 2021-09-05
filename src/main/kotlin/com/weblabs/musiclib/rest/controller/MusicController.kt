@@ -6,20 +6,51 @@ import com.weblabs.musiclib.rest.dto.MusicUpdateDTO
 import com.weblabs.musiclib.rest.mapper.MusicMapper
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PathVariable
 
-@RestController
-@RequestMapping("/api/music")
+import org.springframework.web.bind.annotation.GetMapping
+import liquibase.pro.packaged.id
+
+
+@Controller
+@RequestMapping
 class MusicController(
     private val musicService: MusicService,
     private val musicMapper: MusicMapper
 ) {
 
     @GetMapping
-    fun getMusicList(model: Model): List<Music> {
-        return musicService.getAllMusic()
+    fun getMusicList(model: Model): String {
+        model.addAttribute("music", musicService.getAllMusic())
+        return "music-list"
+    }
+
+    @GetMapping("/newmusic")
+    fun createMusic(music: Music): String {
+        return "music-create"
+    }
+
+    @PostMapping("/addmusic")
+    fun createMusic(music: Music, model: Model): String {
+        musicService.createMusic(music)
+        return "redirect:/"
+    }
+
+    @GetMapping("/edit/{id}")
+    fun showUpdateForm(@PathVariable("id") id: Long, model: Model): String? {
+        val music: Music = musicService.getMusic(id)
+        model.addAttribute("music", music)
+        return "music-update"
+    }
+
+    @PostMapping("/update/{id}")
+    fun updateMusic(@PathVariable("id") musicId: Long, music: Music, model: Model): String {
+        musicService.createMusic(music)
+        return "redirect:/"
     }
 
     @GetMapping("/{music_id}")
@@ -27,14 +58,9 @@ class MusicController(
         return musicService.getMusic(musicId)
     }
 
-    @PutMapping
-    fun updateMusic(@Validated @RequestBody dto: MusicUpdateDTO): Music {
-        return musicService.createMusic(musicMapper.updateMusic(dto))
-    }
-
-    @DeleteMapping("/{music_id}")
-    fun deleteMusic(@PathVariable("music_id") musicId: Long): ResponseEntity<String> {
+    @GetMapping("/delete/{id}")
+    fun deleteMusic(@PathVariable("id") musicId: Long): String {
         musicService.deleteMusic(musicId)
-        return ResponseEntity(HttpStatus.NO_CONTENT)
+        return "redirect:/"
     }
 }
