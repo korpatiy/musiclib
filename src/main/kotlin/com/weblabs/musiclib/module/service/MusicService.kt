@@ -9,11 +9,13 @@ class MusicService(
     private val musicRepository: MusicRepository
 ) {
 
-    fun getMusic(musicId: Long): Music = musicRepository.findById(musicId).get()
+    fun getMusic(id: Long): Music = musicRepository.findById(id).orElseThrow {
+        throw IllegalArgumentException("Invalid music id: $id")
+    }
 
     fun getAllMusic(): List<Music> = musicRepository.findAll().sortedBy { it.name }
 
     fun createMusic(music: Music): Music = musicRepository.save(music)
 
-    fun deleteMusic(musicId: Long) = musicRepository.deleteById(musicId)
+    fun deleteMusic(id: Long) = musicRepository.deleteById(id)
 }
