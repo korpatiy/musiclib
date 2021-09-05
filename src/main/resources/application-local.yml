@@ -5,4 +5,4 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: korpatiy
     password: postgres
-    url: jdbc:postgresql://db:5432/musicdb
+    url: jdbc:postgresql://localhost:5430/musicdb

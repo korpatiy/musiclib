@@ -32,7 +32,6 @@ class MusicController(
     }
 
     @PostMapping("/addmusic")
-    @ResponseStatus(HttpStatus.OK)
     fun createMusic(@ModelAttribute("music") @Valid music: Music, bindingResult: BindingResult): String {
         if (bindingResult.hasErrors())
             return "music-create"
@@ -48,7 +47,6 @@ class MusicController(
     }
 
     @PostMapping("/update/{id}")
-    @ResponseStatus(HttpStatus.OK)
     fun updateMusic(
         @PathVariable("id") id: Long,
         @ModelAttribute("music") @Valid music: Music,
@@ -61,7 +59,6 @@ class MusicController(
     }
 
     @GetMapping("/delete/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteMusic(@PathVariable("id") id: Long): String {
         musicService.deleteMusic(id)
         return "redirect:/"

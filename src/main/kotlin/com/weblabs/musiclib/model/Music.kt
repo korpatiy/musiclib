@@ -1,8 +1,8 @@
 package com.weblabs.musiclib.model
 
+import org.hibernate.validator.constraints.Length
 import javax.persistence.*
-import javax.validation.constraints.NotEmpty
-import javax.validation.constraints.Size
+import javax.validation.constraints.*
 
 /**
  * Music
@@ -17,12 +17,12 @@ data class Music(
     var id: Long = 0,
 
     @Column(name = "name", length = 200)
-    @NotEmpty(message = "Name should not be empty")
+    @field:NotEmpty(message = "Name should not be empty")
     @field:Size(min = 1, max = 50, message = "Название должно содержать хотя бы 1 символ и не превышать 50")
     var name: String = "",
 
     @Column(name = "year", length = 4)
-    @NotEmpty(message = "Year should not be empty")
-    @field:Size(min = 4, max = 4, message = "Год должен состоять из 4 символов")
+    @field:NotEmpty(message = "Year should not be empty")
+    @field:Pattern(regexp = "^[12][0-9]{3}\$", message = "Год должен быть в формате @2021")
     var year: String = "",
 )

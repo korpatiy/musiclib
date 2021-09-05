@@ -13,5 +13,5 @@ class MusicUpdateDTO(
     var name: String? = "",
 
     @field:Size(min = 4, max = 4, message = "Год должен состоять из 4 символов")
-    var year: String? = "",
+    var year: String? = ""
 )
