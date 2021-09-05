@@ -3,10 +3,26 @@ version: '3.9'
 services:
   db:
     image: 'postgres:latest'
-    container_name: musicdb
     ports:
-      - "5432:5432"
+      - "5430:5432"
     environment:
       - POSTGRES_USER=korpatiy
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=musicdb
+    networks:
+      - music-net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - music-net
+
+networks:
+  music-net:
+    name: music-net
